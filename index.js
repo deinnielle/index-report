@@ -1,60 +1,82 @@
 const fs = require("fs");
 
-const rawdata = fs.readFileSync("index.json");
-const index = JSON.parse(rawdata);
-console.log(index);
+const data = fs.readFileSync("index.json");
+const index = JSON.parse(data);
 
-const startYear = 2000;
-const startMonth = 9;
-const startDay = 9;
-const endYear = 2015;
-const endMonth = 9;
-const endDay = 9;
+const startYear = 2021;
+const startMonth = 1;
+const endYear = 2021;
+const endMonth = 6;
+
+const interval = 1 + endMonth - startMonth + (endYear - startYear) * 12;
+interval;
+
+let month = startMonth;
+let monthString;
+let year = startYear;
 
 const filteredIndex = [];
-let count = 0;
-for (let i = 0; i < index.length; i++) {
-  const indexYear = parseInt(index[i].Date.substring(6, 10));
-  const indexMonth = parseInt(index[i].Date.substring(3, 5));
-  const indexDay = parseInt(index[i].Date.substring(0, 2));
+for (let i = 1; i <= interval; i++) {
+  if (month < 10) {
+    monthString = `0${month}`;
+  } else {
+    monthString = month;
+  }
+  const date = `20/${monthString}/${year} 16:00:00`;
 
-  if (indexYear >= startYear && indexYear <= endYear) {
-    count++;
-    // if (indexMonth === startMonth && startDay === indexDay) {
-    // }
-    if (count === 12) {
-      filteredIndex.push(index[i]);
-      count = 0;
+  const result = index.find((o) => o.Date === date);
+
+  if (result === undefined) {
+    const date = `21/${monthString}/${year} 16:00:00`;
+    const result = index.find((o) => o.Date === date);
+
+    if (result === undefined) {
+      const date = `22/${monthString}/${year} 16:00:00`;
+      const result = index.find((o) => o.Date === date);
+      filteredIndex.push(result);
+    } else {
+      filteredIndex.push(result);
     }
+  } else {
+    filteredIndex.push(result);
+  }
+
+  month++;
+
+  if (month === 13) {
+    month = 1;
+    year++;
   }
 }
 
+console.log("filteredIndex", filteredIndex);
+
 let investmentValue = 0;
-let monthly = 10000;
+let monthlySaving = 10000;
 let start = 10000;
-let saving = 0;
+let saved = 0;
 
 for (let i = 0; i < filteredIndex.length; i++) {
   if (i === 0) {
-    if (start > monthly) {
+    if (start > monthlySaving) {
       investmentValue += start;
-      saving = start + monthly * filteredIndex.length;
+      saved = start + monthlySaving * filteredIndex.length;
     } else {
-      investmentValue += monthly;
-      saving = monthly * filteredIndex.length;
+      investmentValue += monthlySaving;
+      saved = monthlySaving * filteredIndex.length;
     }
   } else {
     const change = filteredIndex[i].Close / filteredIndex[i - 1].Close;
 
     const investmentChange = investmentValue * change;
 
-    investmentValue = investmentChange + monthly;
+    investmentValue = investmentChange + monthlySaving;
   }
 }
 
 console.log(
-  "saving :>> ",
-  parseInt(saving)
+  "saved :>> ",
+  parseInt(saved)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 );
@@ -65,8 +87,8 @@ console.log(
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 );
 console.log(
-  "ernings :>> ",
-  parseInt(investmentValue - saving)
+  "earnings :>> ",
+  parseInt(investmentValue - saved)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 );
