@@ -3,10 +3,10 @@ const fs = require("fs");
 const data = fs.readFileSync("index.json");
 const index = JSON.parse(data);
 
-const startYear = 2021;
-const startMonth = 1;
-const endYear = 2021;
-const endMonth = 6;
+const startYear = 2000;
+const startMonth = 3;
+const endYear = 2020;
+const endMonth = 3;
 
 const interval = 1 + endMonth - startMonth + (endYear - startYear) * 12;
 interval;
@@ -49,11 +49,9 @@ for (let i = 1; i <= interval; i++) {
   }
 }
 
-console.log("filteredIndex", filteredIndex);
-
 let investmentValue = 0;
 let monthlySaving = 10000;
-let start = 10000;
+let start = 0;
 let saved = 0;
 
 for (let i = 0; i < filteredIndex.length; i++) {
