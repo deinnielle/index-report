@@ -4,11 +4,11 @@ const data = fs.readFileSync(path.resolve(__dirname, "../data/index.json"));
 const index = JSON.parse(data);
 const _ = require("lodash");
 
-exports.filterIndex = async () => {
-  const startYear = 2000;
-  const startMonth = 3;
-  const endYear = 2020;
-  const endMonth = 3;
+exports.filterIndex = async (start, end) => {
+  const startYear = parseInt(start.substring(0, 4));
+  const startMonth = parseInt(start.substring(5, 7));
+  const endYear = parseInt(end.substring(0, 4));
+  const endMonth = parseInt(end.substring(5, 7));
 
   const interval = 1 + endMonth - startMonth + (endYear - startYear) * 12;
 
@@ -51,27 +51,25 @@ exports.filterIndex = async () => {
     }
   }
 
-  //   if (!_.isEmpty(filteredIndex)) {
-  //     return filteredIndex;
-  //   } else {
-  //     return [];
-  //   }
-
   return filteredIndex;
 };
 
-exports.calculateInvestmentValue = async (filteredIndex) => {
+exports.calculateInvestmentValue = async (
+  filteredIndex,
+  monthlySaving,
+  startValue
+) => {
   const investmentByMonths = [];
   let investmentValue = 0;
-  let monthlySaving = 10000;
-  let start = 0;
+  // let monthlySaving = 10000;
+  // let start = 0;
   let saved = 0;
 
   for (let i = 0; i < filteredIndex.length; i++) {
     if (i === 0) {
-      if (start > monthlySaving) {
-        investmentValue += start;
-        saved = start + monthlySaving * filteredIndex.length;
+      if (startValue > monthlySaving) {
+        investmentValue += startValue;
+        saved = startValue + monthlySaving * filteredIndex.length;
         investmentByMonths.push(getInt(investmentValue));
       } else {
         investmentValue += monthlySaving;
