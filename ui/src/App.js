@@ -1,5 +1,4 @@
 import "./App.css";
-import { getInvestmentValue } from "../src/helpers";
 
 const App = () => {
   return (
