@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import "./App.css";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -66,7 +65,7 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <div>
       <p>Pick dates and values</p>
       <form onSubmit={handleSubmit}>
         <input type="date" onChange={handleStartDate} value={startDate} />
