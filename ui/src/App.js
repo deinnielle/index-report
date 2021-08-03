@@ -1,12 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { Line } from "react-chartjs-2";
 import "./App.css";
 
 const App = () => {
-  const [value, setValue] = useState([]);
-  const [startDate, setStartDate] = useState("2000-01-01");
-  const [endDate, setEndDate] = useState("2000-03-01");
+  const [data, setData] = useState([]);
+  const [startDate, setStartDate] = useState("1990-01-01");
+  const [endDate, setEndDate] = useState("2020-01-01");
   const [monthlySaving, setMonthlySaving] = useState(10000);
   const [startValue, setStartValue] = useState(0);
+
+  const chartData = {
+    labels: data.dates,
+    datasets: [
+      {
+        label: "",
+        data: data.investmentByMonths,
+        fill: false,
+        backgroundColor: "rgb(0, 0, 0)",
+        borderColor: "rgba(0, 0, 0, 1)",
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
 
   useEffect(() => {
     getData();
@@ -17,22 +39,17 @@ const App = () => {
       `http://localhost:3000/getInvestmentValue/?start=${startDate}&end=${endDate}&monthlySaving=${monthlySaving}&startValue=${startValue}`
     );
     const data = await response.json();
-    setValue(data);
+    setData(data);
   };
-
-  // const body = () => {
-  //   return {
-  //     startDate: startDate,
-  //     endDate: endDate,
-  //   };
-  // };
 
   const handleStartDate = (event) => {
     setStartDate(event.target.value);
+    getData();
   };
 
   const handleEndDate = (event) => {
     setEndDate(event.target.value);
+    getData();
   };
 
   const handleMonthlySaving = (event) => {
@@ -43,10 +60,15 @@ const App = () => {
     setStartValue(event.target.value);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    getData();
+  };
+
   return (
-    <div>
-      <div className="App">Pick dates</div>
-      <div>
+    <div className="App">
+      <p>Pick dates and values</p>
+      <form onSubmit={handleSubmit}>
         <input type="date" onChange={handleStartDate} value={startDate} />
         <input type="date" onChange={handleEndDate} value={endDate} />
         <input
@@ -59,8 +81,12 @@ const App = () => {
           onChange={handleStartValue}
           value={startValue}
         ></input>
-        <button onClick={getData}>Save</button>
-      </div>
+        <button>Send</button>
+      </form>
+      <p>Investment value: {data.investmentValue}</p>
+      <p>Saved: {data.saved}</p>
+      <p>Earnings: {data.earnings}</p>
+      <Line data={chartData} options={options} />
     </div>
   );
 };

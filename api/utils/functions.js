@@ -59,10 +59,9 @@ exports.calculateInvestmentValue = async (
   monthlySaving,
   startValue
 ) => {
+  const dates = [];
   const investmentByMonths = [];
   let investmentValue = 0;
-  // let monthlySaving = 10000;
-  // let start = 0;
   let saved = 0;
 
   for (let i = 0; i < filteredIndex.length; i++) {
@@ -70,19 +69,20 @@ exports.calculateInvestmentValue = async (
       if (startValue > monthlySaving) {
         investmentValue += startValue;
         saved = startValue + monthlySaving * filteredIndex.length;
-        investmentByMonths.push(getInt(investmentValue));
+        investmentByMonths.push(parseInt(investmentValue));
+        dates.push(filteredIndex[i].Date.substring(0, 10));
       } else {
         investmentValue += monthlySaving;
         saved = monthlySaving * filteredIndex.length;
-        investmentByMonths.push(getInt(investmentValue));
+        investmentByMonths.push(parseInt(investmentValue));
+        dates.push(filteredIndex[i].Date.substring(0, 10));
       }
     } else {
       const change = filteredIndex[i].Close / filteredIndex[i - 1].Close;
-
       const investmentChange = investmentValue * change;
-
       investmentValue = investmentChange + monthlySaving;
-      investmentByMonths.push(getInt(investmentValue));
+      investmentByMonths.push(parseInt(investmentValue));
+      dates.push(filteredIndex[i].Date.substring(0, 10));
     }
   }
 
@@ -91,6 +91,7 @@ exports.calculateInvestmentValue = async (
     saved: getInt(saved),
     earnings: getInt(investmentValue - saved),
     investmentByMonths: investmentByMonths,
+    dates: dates,
   };
 
   return r;
