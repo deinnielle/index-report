@@ -3,8 +3,8 @@ import { Line } from "react-chartjs-2";
 
 const App = () => {
   const [data, setData] = useState([]);
-  const [startDate, setStartDate] = useState("1990-01-01");
-  const [endDate, setEndDate] = useState("2020-01-01");
+  const [startDate, setStartDate] = useState("2000-01-01");
+  const [endDate, setEndDate] = useState("2021-06-01");
   const [monthlySaving, setMonthlySaving] = useState(10000);
   const [startValue, setStartValue] = useState(0);
 
@@ -15,8 +15,8 @@ const App = () => {
         label: "",
         data: data.investmentByMonths,
         fill: false,
-        backgroundColor: "rgb(0, 0, 0)",
-        borderColor: "rgba(0, 0, 0, 1)",
+        backgroundColor: "rgb(0, 0, 0, 1)",
+        borderColor: "rgba(0, 0, 0, 0.5)",
       },
     ],
   };
