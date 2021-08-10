@@ -12,11 +12,18 @@ const App = () => {
     labels: data.dates,
     datasets: [
       {
-        label: "",
+        label: "Stocks",
         data: data.investmentByMonths,
         fill: false,
         backgroundColor: "rgb(0, 0, 0, 1)",
-        borderColor: "rgba(0, 0, 0, 0.5)",
+        borderColor: "rgba(0, 0, 0, 1)",
+      },
+      {
+        label: "Savings",
+        data: data.savedByMonths,
+        fill: false,
+        backgroundColor: "rgb(255, 0, 0, 1)",
+        borderColor: "rgba(255, 0, 0, 1)",
       },
     ],
   };
@@ -26,6 +33,9 @@ const App = () => {
       legend: {
         display: false,
       },
+    },
+    animation: {
+      duration: 0,
     },
   };
 
@@ -43,12 +53,10 @@ const App = () => {
 
   const handleStartDate = (event) => {
     setStartDate(event.target.value);
-    getData();
   };
 
   const handleEndDate = (event) => {
     setEndDate(event.target.value);
-    getData();
   };
 
   const handleMonthlySaving = (event) => {
