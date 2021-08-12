@@ -24,23 +24,14 @@ exports.filterIndex = async (start, end) => {
     } else {
       monthString = month;
     }
-    const date = `20/${monthString}/${year} 16:00:00`;
 
-    const result = index.find((o) => o.Date === date);
-
-    if (result === undefined) {
-      const date = `21/${monthString}/${year} 16:00:00`;
+    for (let i = 0; i <= 10; i++) {
+      const date = `1${i}/${monthString}/${year} 16:00:00`;
       const result = index.find((o) => o.Date === date);
-
-      if (result === undefined) {
-        const date = `22/${monthString}/${year} 16:00:00`;
-        const result = index.find((o) => o.Date === date);
+      if (result) {
         filteredIndex.push(result);
-      } else {
-        filteredIndex.push(result);
+        break;
       }
-    } else {
-      filteredIndex.push(result);
     }
 
     month++;
