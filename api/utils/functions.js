@@ -88,7 +88,8 @@ exports.calculateInvestmentValue = async (
   const r = {
     investmentValue: getInt(investmentValue),
     saved: getInt(saved),
-    earnings: getInt(investmentValue - saved),
+    earnings: `${getInt(investmentValue - saved)} 
+    ${getInt((investmentValue / saved) * 100)}%`,
     investmentByMonths: investmentByMonths,
     savedByMonths: savedByMonths,
     dates: dates,
