@@ -90,9 +90,11 @@ const App = () => {
         ></input>
         <button>Send</button>
       </form>
-      <p>Investment value: {data.investmentValue}</p>
-      <p>Saved: {data.saved}</p>
-      <p>Earnings: {data.earnings}</p>
+      <div className="values">
+        <p>Investment value: {data.investmentValue}</p>
+        <p>Saved: {data.saved}</p>
+        <p>Earnings: {data.earnings}</p>
+      </div>
       <Line data={chartData} options={options} />
     </div>
   );
